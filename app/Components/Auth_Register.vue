@@ -6,7 +6,7 @@
     justifyContent: 'top',
     alignItems: 'center',
     backgroundColor: $root.$data.appOpts.colorStyle.color1}">
-    <AuthViewHeaderText title="My Simple Gym Log"
+    <myHeader title="My Simple Gym Log"
                         :titleColor="$root.$data.appOpts.colorStyle.color3"/>
     <AuthViewInputField name="Username"
                         icon="account"
@@ -54,11 +54,11 @@
 import AuthViewInputField from './AuthViewInputField';
 import AuthViewSubmitButton from './AuthViewSubmitButton';
 import AuthViewRedirectText from './AuthViewRedirectText';
-import AuthViewHeaderText from './AuthViewHeaderText';
+import myHeader from './MyHeader';
 import {Alert} from "react-native";
 export default {
   name: 'Auth_Register',
-  components: { AuthViewInputField, AuthViewSubmitButton, AuthViewRedirectText, AuthViewHeaderText },
+  components: { AuthViewInputField, AuthViewSubmitButton, AuthViewRedirectText, myHeader },
   data: () => {
     return {
       username: '',

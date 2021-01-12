@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text } from 'react-native';
 
-class AuthViewHeaderText extends React.Component {
+class myHeader extends React.Component {
     constructor(props) {
         super(props);
     }
@@ -16,4 +16,4 @@ class AuthViewHeaderText extends React.Component {
         );
     }
 }
-export default AuthViewHeaderText;
+export default myHeader;

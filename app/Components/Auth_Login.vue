@@ -7,7 +7,7 @@
     alignItems: 'center',
     backgroundColor: $root.$data.appOpts.colorStyle.color1
   }">
-    <AuthViewHeaderText title="My Simple Gym Log"
+    <myHeader title="My Simple Gym Log"
                         :titleColor="$root.$data.appOpts.colorStyle.color3"/>
     <AuthViewInputField name="Username"
                         icon="account"
@@ -40,11 +40,11 @@
 import AuthViewInputField from './AuthViewInputField';
 import AuthViewSubmitButton from './AuthViewSubmitButton';
 import AuthViewRedirectText from './AuthViewRedirectText';
-import AuthViewHeaderText from './AuthViewHeaderText';
+import myHeader from './MyHeader';
 import { Alert } from 'react-native';
 export default {
   name: 'Auth_Login',
-  components: { AuthViewInputField, AuthViewSubmitButton, AuthViewRedirectText, AuthViewHeaderText },
+  components: { AuthViewInputField, AuthViewSubmitButton, AuthViewRedirectText, myHeader },
   props: {
     navigation: {
       type: Object,
@@ -73,7 +73,7 @@ export default {
       } else if (this.password.length > 30) {
         Alert.alert('Authentication error', 'Password must be up to 30 characters long');
       } else {
-        this.$root.login(this.username, this.password).then((response) => {
+        this.$root.(this.username, this.password).then((response) => {
           if (response !== false) {
             this.navigation.navigate('MainMenuScreen', { authToken: response});
           }

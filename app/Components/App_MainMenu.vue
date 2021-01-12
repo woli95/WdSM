@@ -6,7 +6,7 @@
     alignItems: 'center',
     backgroundColor: $root.$data.appOpts.colorStyle.color1
   }">
-    <AuthViewHeaderText title="My Simple Gym Log"
+    <myHeader title="My Simple Gym Log"
                         :titleColor="$root.$data.appOpts.colorStyle.color3"/>
     <MainMenuButton :bgColor="$root.$data.appOpts.colorStyle.color2"
                     :fontColor="$root.$data.appOpts.colorStyle.color3"
@@ -56,7 +56,7 @@
   </view>
 </template>
 <script>
-import AuthViewHeaderText from "./AuthViewHeaderText";
+import myHeader from "./MyHeader";
 import MainMenuButton from './MainMenuButton';
 import ModalAbout from './ModalAbout';
 import ModalSelectPlan from './ModalSelectPlan';
@@ -71,7 +71,7 @@ export default {
     }
   },
   components: {
-    MainMenuButton, ModalAbout, ModalSelectPlan, AuthViewHeaderText
+    MainMenuButton, ModalAbout, ModalSelectPlan, myHeader
   },
   props: {
     navigation: {

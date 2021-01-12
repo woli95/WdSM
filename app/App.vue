@@ -10,7 +10,7 @@ import App_MainMenu from './Components/App_MainMenu';
 import App_Settings from './Components/App_Settings';
 import App_ExercisesAndPlans from './Components/App_ExercisesAndPlans'
 import { createAppContainer, createStackNavigator } from 'vue-native-router';
-import { Alert, StatusBar } from 'react-native';
+import { Alert } from 'react-native';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import App_Exercise from './Components/App_Exercise';
@@ -52,7 +52,7 @@ const AuthNavigator = createAppContainer(AuthStackNavigator);
 export default {
   name: 'App',
   components: {
-    AuthNavigator, StatusBar
+    AuthNavigator
   },
   data: () => {
     return {
