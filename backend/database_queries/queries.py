@@ -273,6 +273,7 @@ def delete_plan(plan_id):
 
 def update_plan(plan_id, data):
     try:
+        print(data)
         connection = create_connection()
         cursor = connection.cursor()
         old_exercises = get_plan_exercises(plan_id)
@@ -280,20 +281,23 @@ def update_plan(plan_id, data):
         old_list_found_flags = [False in range(0, len(old_exercises))]
         for i in range(0, len(data["exerciseList"])):
             for j in range(0, len(old_exercises)):
+                print('jestem2')
                 if data["exerciseList"][i]["exercise_id"] == old_exercises[j]["exercise_id"]:
                     cursor.execute("EXEC update_exercise_in_workout {}, {}, {}, {}".format(
                         data["exerciseList"][i]["exercise_id"],
                         i + 1,
                         data["setsAndBreaks"][i]["sets"],
-                        data["setsAndBreaks"][i]["break"]))
+                        int(data["setsAndBreaks"][i]["break"])))
                     connection.commit()
                     new_list_found_flags[i] = True
                     old_list_found_flags[j] = True
         for i in range(0, len(old_list_found_flags)):
+            print('jestem3')
             if old_list_found_flags[i] is False:
                 cursor.execute("EXEC delete_exercise_from_workout {}, {}".format(plan_id,
                                                                                  old_exercises[i]["exercise_id"]))
         for i in range(0, len(new_list_found_flags)):
+            print('jestem4')
             if new_list_found_flags[i] is False:
                 cursor.execute("EXEC add_exercise_to_workout2 {}, {}, {}, {}, {}".format(plan_id,
                                                                                          data["exerciseList"][i][

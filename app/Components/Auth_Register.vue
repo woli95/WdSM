@@ -1,7 +1,6 @@
 <template>
   <view :style="{
-    marginTop: 20,
-    adding: 20,
+    padding: 20,
     flex: 1,
     justifyContent: 'top',
     alignItems: 'center',

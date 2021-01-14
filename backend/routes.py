@@ -1,16 +1,21 @@
 from main import app
 from flask import request, jsonify
 import database_queries.queries as queries
-import mail
+from mail import send_auth_mail_to_reset_password, send_mail_with_new_password
 import json
 import secrets
+
+
+@app.route('/test', methods=['GET'])
+def test():
+    return jsonify('DZIALA'), 200
 
 
 @app.route('/mail/<email_address>/<token>', methods=['GET'])
 @app.route('/mail/<email_address>/send/link', methods=['GET'])
 def mail(token=None, email_address=None):
     if request.path == '/mail/{}/send/link'.format(email_address):
-        password_restart_token = mail.send_auth_mail_to_reset_password(email_address)
+        password_restart_token = send_auth_mail_to_reset_password(email_address)
         if password_restart_token is False:
             return jsonify('FAILURE')
         else:
@@ -22,7 +27,7 @@ def mail(token=None, email_address=None):
         if queries.verify_password_restart_token(token, email_address) is True:
             new_password = secrets.token_hex(5)
             if queries.reset_client_password_and_remove_refresh_password_token(email_address, new_password) is True:
-                if mail.send_mail_with_new_password(email_address, new_password) is True:
+                if send_mail_with_new_password(email_address, new_password) is True:
                     return 'Password has been changed. New password has been sent to your email address'
                 else:
                     return 'Password has been changed, but error has been raised while sending mail'

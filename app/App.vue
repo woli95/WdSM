@@ -21,9 +21,24 @@ import App_History from "./Components/App_History";
 
 const AuthStackNavigator = createStackNavigator(
     {
-      LoginScreen: Auth_Login,
-      RegisterScreen: Auth_Register,
-      PasswordResetScreen: Auth_PasswordReset,
+      LoginScreen: {
+        screen: Auth_Login,
+        navigationOptions: {
+          gesturesEnabled: false,
+        },
+      },
+      RegisterScreen: {
+        screen: Auth_Register,
+        navigationOptions: {
+          gesturesEnabled: false,
+        },
+      },
+      PasswordResetScreen: {
+        screen: Auth_PasswordReset,
+        navigationOptions: {
+          gesturesEnabled: false,
+        },
+      },
       AuthLoadingScreen: Auth_Loading,
       MainMenuScreen: {
         screen: App_MainMenu,

@@ -1,7 +1,6 @@
 <template>
   <view :style="{
-    marginTop: 20,
-    adding: 20,
+    padding: 20,
     flex: 1,
     justifyContent: 'top',
     alignItems: 'center',
@@ -73,7 +72,7 @@ export default {
       } else if (this.password.length > 30) {
         Alert.alert('Authentication error', 'Password must be up to 30 characters long');
       } else {
-        this.$root.(this.username, this.password).then((response) => {
+        this.$root.login(this.username, this.password).then((response) => {
           if (response !== false) {
             this.navigation.navigate('MainMenuScreen', { authToken: response});
           }
