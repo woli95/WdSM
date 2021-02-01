@@ -272,42 +272,48 @@ def delete_plan(plan_id):
 
 
 def update_plan(plan_id, data):
+    #todo:
+        #1. update nazwy
+        #1. update kolejności ćwiczeń
+        #3. update
     try:
-        print(data)
         connection = create_connection()
         cursor = connection.cursor()
-        old_exercises = get_plan_exercises(plan_id)
-        new_list_found_flags = [False in range(0, len(data["exerciseList"]))]
-        old_list_found_flags = [False in range(0, len(old_exercises))]
-        for i in range(0, len(data["exerciseList"])):
-            for j in range(0, len(old_exercises)):
-                print('jestem2')
-                if data["exerciseList"][i]["exercise_id"] == old_exercises[j]["exercise_id"]:
-                    cursor.execute("EXEC update_exercise_in_workout {}, {}, {}, {}".format(
-                        data["exerciseList"][i]["exercise_id"],
-                        i + 1,
-                        data["setsAndBreaks"][i]["sets"],
-                        int(data["setsAndBreaks"][i]["break"])))
-                    connection.commit()
-                    new_list_found_flags[i] = True
-                    old_list_found_flags[j] = True
-        for i in range(0, len(old_list_found_flags)):
-            print('jestem3')
-            if old_list_found_flags[i] is False:
-                cursor.execute("EXEC delete_exercise_from_workout {}, {}".format(plan_id,
-                                                                                 old_exercises[i]["exercise_id"]))
-        for i in range(0, len(new_list_found_flags)):
-            print('jestem4')
-            if new_list_found_flags[i] is False:
-                cursor.execute("EXEC add_exercise_to_workout2 {}, {}, {}, {}, {}".format(plan_id,
-                                                                                         data["exerciseList"][i][
-                                                                                             "exercise_id"],
-                                                                                         data["setsAndBreaks"][i][
-                                                                                             "break"],
-                                                                                         data["setsAndBreaks"][i][
-                                                                                             "sets"], i + 1))
-        cursor.execute("EXEC update_workout {}, '{}', {}".format(plan_id, data["name"], data["break_time"]))
+        cursor.execute("EXEC update_workout {}, '{}', {}".format(plan_id, data['name'], data['break_time']))
         connection.commit()
+        return True
+        #TODO:
+        #UPDATE EXERCISES
+        # notUpdatedPlan =
+        #cursor.fetchall()
+        # old_exercises = get_plan_exercises(plan_id)
+        # new_list_found_flags = [False in range(0, len(data["exerciseList"]))]
+        # old_list_found_flags = [False in range(0, len(old_exercises))]
+        # for i in range(0, len(data["exerciseList"])):
+        #     for j in range(0, len(old_exercises)):
+        #         if data["exerciseList"][i]["exercise_id"] == old_exercises[j]["exercise_id"]:
+        #             cursor.execute("EXEC update_exercise_in_workout {}, {}, {}, {}".format(
+        #                 data["exerciseList"][i]["exercise_id"],
+        #                 i + 1,
+        #                 data["setsAndBreaks"][i]["sets"],
+        #                 int(data["setsAndBreaks"][i]["break"])))
+        #             new_list_found_flags[i] = True
+        #             old_list_found_flags[j] = True
+        # for i in range(0, len(old_list_found_flags)):
+        #     if old_list_found_flags[i] is False:
+        #         cursor.execute("EXEC delete_exercise_from_workout {}, {}".format(plan_id,
+        #                                                                          old_exercises[i]["exercise_id"]))
+        # for i in range(0, len(new_list_found_flags)):
+        #     if new_list_found_flags[i] is False:
+        #         cursor.execute("EXEC add_exercise_to_workout2 {}, {}, {}, {}, {}".format(plan_id,
+        #                                                                                  data["exerciseList"][i][
+        #                                                                                      "exercise_id"],
+        #                                                                                  data["setsAndBreaks"][i][
+        #                                                                                      "break"],
+        #                                                                                  data["setsAndBreaks"][i][
+        #                                                                                      "sets"], i + 1))
+        # cursor.execute("EXEC update_workout {}, '{}', {}".format(plan_id, data["name"], data["break_time"]))
+        # connection.commit()
         return True
     except:
         return False
@@ -377,5 +383,29 @@ def get_training_unit_set_list(unit_id):
         for row in cursor.fetchall():
             results.append(dict(zip(columns, row)))
         return results
+    except:
+        return False
+
+
+def delete_training(training_id):
+    try:
+        connection = create_connection()
+        cursor = connection.cursor()
+        connection.commit()
+        cursor.execute("SELECT id FROM training_unit WHERE training_id={}".format(training_id))
+        tmp = cursor.fetchall()
+        tmp3 = []
+        for training_unit in tmp:
+            cursor.execute("SELECT training_set_id FROM training_unit_training_set WHERE training_unit_id={}".format(training_unit[0]))
+            tmp3.append(x[0] for x in cursor.fetchall())
+            cursor.execute("DELETE FROM training_unit_training_set WHERE training_unit_id={}".format(training_unit[0]))
+        for x in tmp3:
+            for y in x:
+                cursor.execute("DELETE FROM training_set WHERE id={}".format(y))
+        cursor.execute("DELETE FROM training_training_unit WHERE training_id={}".format(training_id))
+        cursor.execute("DELETE FROM training_unit WHERE training_id={}".format(training_id))
+        cursor.execute("DELETE FROM training WHERE id={}".format(training_id))
+        connection.commit()
+        return True
     except:
         return False

@@ -8,8 +8,6 @@ import _ from 'lodash';
 export default class AppPlanAdvancedTable extends React.Component {
     constructor(props) {
         super(props);
-        console.log('XAXAXA')
-        console.log(props);
         this.state = {
             tableHead: ['Exercise', 'Sets', 'Breaks', 'Category'],
             widthArr: [100, 50, 70, 100],

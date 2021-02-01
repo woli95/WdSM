@@ -74,7 +74,18 @@ export default {
   components: { Text, TouchableOpacity, ScrollView },
   methods: {
     async deleteTraining(id) {
-      console.log('delete'.concat(id))
+      const token = await AsyncStorage.getItem('@MSGL:TOKEN');
+      await axios.put(this.$root.backend_url.concat('/training/', token, '/', id, '/delete')).then(async (response) => {
+        if (response.status === 200) {
+          Alert.alert('Training has been deleted');
+          await this.qwe();
+          await this.$forceUpdate();
+        }
+        else
+          Alert.alert('Error while deleting training' );
+      }).catch((error) => {
+        Alert.alert(error.message);
+      });
     },
     showTraining(index) {
       this.visibleElementsArray[index]["training"] = !this.visibleElementsArray[index]["training"];
@@ -120,26 +131,29 @@ export default {
       });
       return list;
     },
+    async qwe() {
+      let tmp_trainings = await this.getTrainingList();
+      for(var i = 0; i < tmp_trainings.length; i++) {
+        this.visibleElementsArray.push({training: false, units: []});
+        let units_list = await this.getTrainingUnits(tmp_trainings[i]["id"]);
+        let set_list = [];
+        let more = [];
+        for(var j = 0; j < units_list.length; j++) {
+          this.visibleElementsArray[i].units.push(false);
+          more.push({
+            unit: units_list[j],
+            sets: await this.getTrainingSets(units_list[j]["id"])
+          })
+        }
+        this.trainingList.push({
+          tr: tmp_trainings[i],
+          ex: more
+        });
+      }
+    }
   },
   async beforeMount() {
-    let tmp_trainings = await this.getTrainingList();
-    for(var i = 0; i < tmp_trainings.length; i++) {
-      this.visibleElementsArray.push({training: false, units: []});
-      let units_list = await this.getTrainingUnits(tmp_trainings[i]["id"]);
-      let set_list = [];
-      let more = [];
-      for(var j = 0; j < units_list.length; j++) {
-        this.visibleElementsArray[i].units.push(false);
-        more.push({
-          unit: units_list[j],
-          sets: await this.getTrainingSets(units_list[j]["id"])
-        })
-      }
-      this.trainingList.push({
-        tr: tmp_trainings[i],
-        ex: more
-      });
-    }
+    await this.qwe();
   }
 }
 </script>

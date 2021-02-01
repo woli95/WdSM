@@ -168,6 +168,7 @@ def plan(token=None, plan_id=None):
 @app.route('/training/<client_token>/get_training_list', methods=['GET'])
 @app.route('/training/<training_id>/get_training_unit_list', methods=['GET'])
 @app.route('/training/<training_unit_id>/get_training_unit_set_list', methods=['GET'])
+@app.route('/training/<client_token>/<training_id>/delete', methods=['PUT'])
 def training(client_token=None, training_id=0, training_unit_id=0):
     if request.path == '/training/{}/create'.format(client_token):
         if queries.create_training(client_token, json.loads(request.data)) is True:
@@ -193,3 +194,8 @@ def training(client_token=None, training_id=0, training_unit_id=0):
             return jsonify(result), 200
         else:
             return jsonify('FAILURE')
+    elif request.path == '/training/{}/{}/delete'.format(client_token, training_id):
+        if queries.delete_training(training_id) is True:
+            return jsonify('OK'), 200
+        else:
+            return jsonify('FAILURE'), 202

@@ -106,7 +106,7 @@ export default {
     },
     removeExerciseFromPlan(id) {
       for(var i = 0; i < this.plan.exerciseList.length; i++) {
-        if (this.plan.exerciseList[i]["exercise_id"] === id) {
+        if (this.plan.exerciseList[i]["id"] === id) {
           this.plan.exerciseList.splice(i, 1);
           this.$forceUpdate();
           return;

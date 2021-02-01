@@ -358,7 +358,6 @@ export default {
           }]);
     },
     async deleteAccountPart2() {
-      console.log("CALL");
       const token = await AsyncStorage.getItem('@MSGL:TOKEN').catch((error) => {
         Alert.alert('Settings -> account delete', error.message);
       });
